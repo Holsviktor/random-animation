@@ -45,33 +45,21 @@ int main() {
 	for (int i = 0; i < HEIGHT; i++) {
 		for (int j = 0; j < WIDTH; j++) {
 			// For each pixel
-			auto [tile_i, tile_j] = noise::tileIndex(i*0.01, j*0.01);
-			int color = (tile_i + tile_j) & 3;
+			double x, y;
+			x = i*0.01; y = j*0.01;
 
+			vector<vector<double>> corner_offset_vectors = noise::cornerDistances(x,y);
+			vector<double> corner_distances(3,0.0);
+
+			for (int i = 0; i < 3; i++) {
+				corner_distances[i] = std::sqrt(std::pow(corner_offset_vectors[i][0],2) + std::pow(corner_offset_vectors[i][1],2));
+			}
+			
 			// Expand to all three channels
 			int pixel_index = CHANNEL_COUNT * (i*WIDTH + j);
-			switch (color) {
-				case 0:
-					color_map[pixel_index + 0] = 200;
-					color_map[pixel_index + 1] = 200;
-					color_map[pixel_index + 2] = 200;
-					break;
-				case 1:
-					color_map[pixel_index + 0] = 200;
-					color_map[pixel_index + 1] = 100;
-					color_map[pixel_index + 2] = 100;
-					break;
-				case 2:
-					color_map[pixel_index + 0] = 100;
-					color_map[pixel_index + 1] = 200;
-					color_map[pixel_index + 2] = 100;
-					break;
-				case 3:
-					color_map[pixel_index + 0] = 100;
-					color_map[pixel_index + 1] = 100;
-					color_map[pixel_index + 2] = 200;
-					break;
-			}
+			color_map[pixel_index + 0] += corner_distances[0] < 0.3 ? 255 : 0;
+			color_map[pixel_index + 1] += corner_distances[1] < 0.3 ? 255 : 0;
+			color_map[pixel_index + 2] += corner_distances[2] < 0.3 ? 255 : 0;
 		}
 	}
 
