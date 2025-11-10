@@ -17,8 +17,8 @@
 using std::vector;
 using std::cout;
 
-#define HEIGHT 640
-#define WIDTH  480
+#define HEIGHT 1080
+#define WIDTH  1920
 #define CHANNEL_COUNT 3
 
 #define DOT_SIZE 3
@@ -44,12 +44,34 @@ int main() {
 	// Generate Grid
 	for (int i = 0; i < HEIGHT; i++) {
 		for (int j = 0; j < WIDTH; j++) {
-			bool is_colored = ( ((i/3)+DOT_OFFSET) % GRID_SIZE < DOT_SIZE) 
-							* ( ((j/3)+DOT_OFFSET) % GRID_SIZE < DOT_SIZE);
+			// For each pixel
+			auto [tile_i, tile_j] = noise::tileIndex(i*0.01, j*0.01);
+			int color = (tile_i + tile_j) & 3;
+
+			// Expand to all three channels
 			int pixel_index = CHANNEL_COUNT * (i*WIDTH + j);
-			color_map[pixel_index + 0] = 255 * is_colored;
-			color_map[pixel_index + 1] = 255 * is_colored;
-			color_map[pixel_index + 2] = 255 * is_colored;
+			switch (color) {
+				case 0:
+					color_map[pixel_index + 0] = 200;
+					color_map[pixel_index + 1] = 200;
+					color_map[pixel_index + 2] = 200;
+					break;
+				case 1:
+					color_map[pixel_index + 0] = 200;
+					color_map[pixel_index + 1] = 100;
+					color_map[pixel_index + 2] = 100;
+					break;
+				case 2:
+					color_map[pixel_index + 0] = 100;
+					color_map[pixel_index + 1] = 200;
+					color_map[pixel_index + 2] = 100;
+					break;
+				case 3:
+					color_map[pixel_index + 0] = 100;
+					color_map[pixel_index + 1] = 100;
+					color_map[pixel_index + 2] = 200;
+					break;
+			}
 		}
 	}
 
