@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 4.1)
 project(introproject CXX)
 
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 find_package(OpenCV REQUIRED)
 
 if (NOT OpenCV_FOUND)
@@ -8,6 +9,9 @@ if (NOT OpenCV_FOUND)
 endif()
 
 include_directories(${OpenCV_INCLUDE_DIRS})
-add_executable(introproject src/main.cpp)
+add_executable(introproject
+	src/main.cpp
+	src/noise.cpp
+)
 
 target_link_libraries(introproject ${OpenCV_LIBS})
