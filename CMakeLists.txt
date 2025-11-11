@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 4.1)
 project(introproject CXX)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+set(CMAKE_CXX_FLAGS_RELEASE "-O2 -DNDEBUG")
 find_package(OpenCV REQUIRED)
 
 if (NOT OpenCV_FOUND)
