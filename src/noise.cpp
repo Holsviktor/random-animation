@@ -32,7 +32,7 @@ namespace noise {
 	vector<int> permutation(512);
 
 	int cornerGradient(int i, int j) {
-		return permutation[ permutation[i & 255]+ (j & 255) ] & 7;
+		return permutation[(permutation[i & 255]+ (j & 255)) & 255 ] & 7;
 	}
 
 	void initPermutationTable(uint64_t seed) {
