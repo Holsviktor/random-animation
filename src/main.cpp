@@ -46,12 +46,12 @@ void save_image(int i) {
 	cv::normalize(scaled_image, img, 0, 255, cv::NORM_MINMAX, CV_8UC3);
 	cv::imwrite(filename, img);
 	cout << "Image written to " << filename << "\n";
-
 }
+
 void generate_grid(double t, int i) {
 	std::fill(color_map.begin(), color_map.end(), 0.0);
-	for     (double i = 20; i < -50 + (double) WIDTH  / GRID_SIZE; i++) {
-		for (double j = 20; j < -20 + (double) HEIGHT / GRID_SIZE; j++) {
+	for     (double i = -80; i < 80 + (double) WIDTH  / GRID_SIZE; i++) {
+		for (double j = -80; j < 80 + (double) HEIGHT / GRID_SIZE; j++) {
 
 			double x = SCALE * (i * GRID_SIZE + DOT_OFFSET);
 			double y = SCALE * (j * GRID_SIZE + DOT_OFFSET);
@@ -79,7 +79,6 @@ void generate_grid(double t, int i) {
 		}
 	}
 	save_image(i);
-	
 }
 void generate_fog(double t, int i) {
 	for (int i = 0; i < HEIGHT; i++) {
@@ -121,9 +120,7 @@ int main() {
 	// Generate Grid
 	noise::initPermutationTable(1337);
 
-	for (int i = 0; i < 100; i++) {
-		generate_fog((double) i / 10.0, i);
+	for (int i = 0; i < 10000; i++) {
+		generate_grid((double) i / 100.0, i);
 	}
-
-
 }
